@@ -1,50 +1,75 @@
 # Tablova — PDF → Excel Dönüştürücü
 
-**Sürüm 1.1.0 · Windows x64 · Portable PDF tablo → XLSX**
+**Yayıncı: DEMİRHAN ÖZDEMİR** · **Ana dil: Türkçe** · **Sürüm: 1.1.0** · **Platform: Windows x64 · Portable**
 
-Dijital PDF sayfalarındaki tabloları ve gerektiğinde OCR ile okunan tarama içeriklerini düzenlenebilir Excel çalışma kitaplarına aktarmayı amaçlayan uygulama.
+![Türkçe](https://img.shields.io/badge/Dil-Türkçe-blue) ![Excel](https://img.shields.io/badge/Çıktı-XLSX-informational) ![Önizleme](https://img.shields.io/badge/Yayın-Önizleme-orange)
 
-**[PDF TO EXCEL.zip indir — GitHub Releases](https://github.com/rusebound/PDF-to-Excel/releases)**
+PDF dosyalarındaki **tabloları düzenlenebilir Excel çalışma kitaplarına (XLSX)** dönüştürmek için geliştirilmiş bağımsız masaüstü uygulaması. Çok sayfalı tabloların mümkün olduğunda aynı çalışma sayfasında birleştirilmesi hedeflenir.
 
-## Kurulum ve kullanım
+**[⬇ Tablova 1.1.0 — Portable Sürümü İndir](https://github.com/rusebound/PDF-to-Excel/releases/tag/v1.1.0)**
 
-1. ZIP arşivini tamamen çıkarın; içindeki `_internal` klasörünü koruyun.
-2. `Tablova/Tablova.exe` dosyasını başlatın.
-3. PDF dosyalarını **PDF Seç** ile ekleyin veya pencereye sürükleyin.
-4. **Excel'e Dönüştür** ile işlemi başlatın.
-5. Kaynak PDF ile aynı klasörde oluşan XLSX çıktısını açıp tablo, satır ve sayı değerlerini doğrulayın.
+## Kullanım kolaylığı ve faydalar
 
-Paketin kılavuzuna göre kaynak PDF değiştirilmez ve mevcut Excel dosyalarının üzerine yazılmaz.
+| İhtiyaç | Sağladığı fayda |
+|---|---|
+| PDF tablosunu Excel'e aktarmak | Hücreleri tek tek kopyalama ihtiyacını azaltmak |
+| Uzun rapor ve çizelgeler | Sayfalar boyunca devam eden tabloları birleştirmeye çalışmak |
+| Sayılar üzerinde hesap yapmak | Düzenlenebilir XLSX hücreleriyle analiz yapmak |
+| Sütun/satır düzenini korumak | Okunabilir tablo başlıkları ve biçimlendirme üretmek |
+| Özgün PDF'yi arşivlemek | Kaynağa dokunmadan ayrı bir Excel çıktısı oluşturmak |
 
 ## Özellikler
 
-- PDF metin, çizgi ve tablo geometrisi üzerinden veri çıkarımı.
-- Çok sayfalı devam tablolarını tek mantıksal tablo olarak işleme hedefi.
-- Yerel OCR gerektiren sayfalar için Tesseract.
-- Metin kaydırma, hücre tipleri ve Türkçe sayı biçimleriyle XLSX çıktı.
+- **Basit kullanım:** PDF seç → Excel'e dönüştür → XLSX dosyasını aç.
+- **PDF tablo algılama:** Dijital metin, çizgi ve tablo geometrisiyle hücre çıkarımı.
+- **Çok sayfalı tablo birleştirme:** Tek mantıksal tablonun devamını tanımaya yönelik işleme.
+- **Yerel OCR:** Tarama sayfalarında gerektiğinde Tesseract metin tanıma.
+- **Türkçe sayı ve tarih işleme:** Uygun değerleri Excel'de kullanılabilir hücre tiplerine aktarmayı hedefler.
+- **Metin kaydırma ve sütun genişliği:** Okunabilir Excel çıktısı amaçlanır.
+- **Çıktı koruması:** Paket kılavuzuna göre PDF değiştirilmez ve aynı isimli XLSX üzerine yazılmaz.
 
-## Test kaydı
+## 3 adımda dönüştürme
 
-Dağıtımda `QA_REPORT_1_1.md` yer alır. Geliştirici raporu, **1.443 sayfalık** bir örneğin **tek Excel sayfasında, 8.911 satır ve 12 sütun** olarak işlendiğini bildirir. Bu bir **belirli yerel senaryo raporudur**; tüm PDF türleri için garanti ya da bağımsız sertifika değildir.
+1. [Releases](https://github.com/rusebound/PDF-to-Excel/releases/tag/v1.1.0) bölümünden `PDF.TO.EXCEL.zip` indirin; arşivi tamamen çıkarın.
+2. `Tablova/Tablova.exe` dosyasını çalıştırın; `_internal` klasörünü yanında tutun. **PDF Seç** düğmesiyle dosyanızı ekleyin veya sürükleyin.
+3. **Excel'e Dönüştür** düğmesine basın. Çıktıyı PDF'nin bulunduğu klasörde açın ve kontrol edin.
 
-**Sınırlar:** Birleşik hücreler, tarama kalitesi, el yazısı, formüller, karışık tablolar ve okunamayan kaynak değerler doğruluğu azaltabilir. Sonuçlar kontrol edilmelidir.
+> **Sistem:** Windows x64 üzerinde `.exe` çalıştırma izni gerekir. Program Chrome/Edge eklentisi değildir.
 
-## Teknik ve lisans
+## Büyük dosyalar ve kalite hakkında
 
-Python, PySide6, pdfplumber/pdfminer.six, PDFium, Tesseract ve openpyxl tabanlı portable paket. **Bu depo şimdilik binary dağıtım dokümantasyonu içerir; uygulamanın özgün kaynak kodunun tam deposu değildir.** Üçüncü taraf lisansların yayımlama koşulları ayrıca incelenmelidir.
+ZIP içindeki `QA_REPORT_1_1.md` adlı geliştirici raporu, **1.443 sayfalık bir örnek PDF'nin 8.911 satır ve 12 sütun içeren tek bir Excel çalışma sayfasına** aktarıldığını bildirir. **Bu, belirli bir dosyayla yapılmış yerel test kaydıdır**; tüm PDF belgelerinde aynı performansı veya eksiksiz doğruluğu garanti etmez.
 
-## SHA-256
+OCR kalitesi düşük taramalarda, el yazısında, iç içe/geçişli tablolarda ve birleşik hücrelerde doğruluk azalabilir. Kaynak belgede okunamayan sayılar otomatik olarak tahmin edilmemelidir. Excel'deki tüm tutarları ve sayı biçimlerini kaynak PDF ile karşılaştırın.
 
-`PDF TO EXCEL.zip`:
+## Sık sorulan sorular
+
+**Bir PDF, çok Excel sayfası mı oluşturur?** Motor, aynı tablonun devamını mümkünse tek çalışma sayfasında birleştirmeyi hedefler; birden fazla tablo veya Excel satır sınırı gibi durumlarda farklı sayfalar gerekebilir.
+
+**Excel kurulumu gerekiyor mu?** Dönüştürme motoru için zorunlu değildir; `.xlsx` dosyasını açmak için Excel veya uyumlu yazılım gerekir.
+
+**PDF üzerinde değişiklik yapar mı?** Paket kılavuzuna göre hayır.
+
+**Hatasız dönüştürme garanti mi?** Hayır; özellikle taranmış ve düzensiz tablolar kontrol gerektirir.
+
+## Teknoloji ve dağıtım
+
+Python, PySide6, pdfplumber/pdfminer.six, PDFium, Tesseract ve openpyxl bileşenleri. **Bu depo portable dağıtım ve dokümantasyon deposudur; özgün uygulama kaynak kodunun tamamını içerdiği iddia edilmez.** Üçüncü taraf lisanslar ayrıca denetlenmelidir.
+
+## SHA-256 bütünlük kontrolü
+
+`PDF.TO.EXCEL.zip`:
 
 `1316FDBD4483DB87D29DCD51C5843D6E59E360F167BC696AC612B4436628F34A`
 
-PowerShell: `Get-FileHash '.\PDF TO EXCEL.zip' -Algorithm SHA256`
+PowerShell: `Get-FileHash '.\PDF.TO.EXCEL.zip' -Algorithm SHA256`
 
-## Yayın durumu
+**Yayın durumu:** Önizleme. Dosya yüklemesi ve SHA-256 eşleşmesi doğrulandı; bağımsız farklı belge/Windows uyumluluk testi ve kod imzası doğrulanmadı.
 
-**Önizleme (pre-release).** ZIP içinde geliştirici kalite raporu bulunmaktadır; GitHub yayımı için ayrıca bağımsız Windows uçtan uca test ve kod imzalama yapılmadı.
+**Destek:** [GitHub Issues](https://github.com/rusebound/PDF-to-Excel/issues) — özel verilerinizi yüklemeyin.
 
-**English:** Tablova extracts PDF tables to editable Excel XLSX on Windows. Portable and offline; review results for OCR and complex layouts.
+---
 
-Destek: [Issues](https://github.com/rusebound/PDF-to-Excel/issues).
+**Yayıncı: DEMİRHAN ÖZDEMİR** · [GitHub profili](https://github.com/rusebound)
+
+**English (short summary):** Portable Windows PDF-table-to-Excel converter with support for multi-page tables. Output accuracy depends on document structure and scan quality.
