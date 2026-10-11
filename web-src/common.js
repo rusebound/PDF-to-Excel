@@ -25,16 +25,16 @@ export function downloadFile(blob, name) {
   a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 15000);
 }
-export async function openPdf(file) {
+export async function openPdf(file, {maxFileBytes = 52_428_800} = {}) {
   if (!file || !(file.name || "").toLowerCase().endsWith(".pdf")) throw new Error("PDF dosyası seçin.");
-  if (file.size > 52_428_800) throw new Error("Tarayıcı sürümünde 50 MB dosya sınırı var.");
+  if (file.size > maxFileBytes) throw new Error("Seçilen PDF bu işlem için izin verilen dosya boyutunu aşıyor.");
   const header = new Uint8Array(await file.slice(0, 8).arrayBuffer());
   if (String.fromCharCode(...header).slice(0, 5) !== "%PDF-") throw new Error("Bu dosyada PDF imzası bulunamadı.");
   const bytes = new Uint8Array(await file.arrayBuffer());
   const task = getDocument({data: bytes, isEvalSupported:false, enableXfa:false, useSystemFonts:true});
   return task.promise;
 }
-export function mount({tool,title,subtitle,description,accept,action,features,limit="50 MB"}) {
+export function mount({tool,title,subtitle,description,accept,action,features,limit="50 MB",maxFileBytes=52_428_800}) {
   document.title = title + " | Demirhan Özdemir";
   element("tool-title").textContent = title;
   element("hero-subtitle").textContent = subtitle;
@@ -63,7 +63,7 @@ export function mount({tool,title,subtitle,description,accept,action,features,li
       if ((!accept.includes(".pdf") && isPDF) || (!accept.includes("image") && isImage) || (!isPDF && !isImage)) {
         setMessage("Bu dosya türü desteklenmiyor.", "error"); return;
       }
-      if (file.size > 52_428_800) {setMessage("50 MB üzerindeki dosyalar bu sürümde desteklenmiyor.", "error");return;}
+      if (file.size > maxFileBytes) {setMessage("Dosya boyutu bu işlemin sınırını aşıyor.", "error");return;}
       app.file = file;
       selected.textContent = file.name + " · " + (file.size / 1_048_576).toFixed(1) + " MB";
       setMessage("Dosya yalnızca tarayıcı belleğinde seçildi.");

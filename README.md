@@ -4,6 +4,17 @@
 **Ã–nemli:** Web sÃ¼rÃ¼mÃ¼nÃ¼n Ã¶zellikleri Windows masaÃ¼stÃ¼ motoruyla birebir aynÄ± deÄŸildir. [Gizlilik ve teknik sÄ±nÄ±rlar](docs/GIZLILIK_VE_SINIRLAR.md) Â· [Denetlenebilir web kaynak kodu](web-src/).
 <!-- /TARAYICIDA_CEVRIMDISI_SURUM -->
 
+### Web sürümü — sayfa limiti kaldırıldı
+
+- **PDF sayfa sayısı için 120 sayfa sınırı artık bulunmuyor.** Bütün sayfalar sırayla incelenir.
+- Uzun belgelerde işlenen sayfa sayısı gösterilir; **İşlemi durdur** düğmesi bulunur.
+- Önceki 15.000 satırlık yapay sınır kaldırılmıştır. Excel'in çalışma sayfası başına 1.048.576 satır sınırında yeni sayfa oluşturulur.
+- **Gerçek sınırlar:** Tarayıcının belleği, cihaz performansı, PDF'nin işlenebilirliği ve Excel'in teknik özellikleri. Çok büyük PDF dosyaları başarısız olabilir.
+- Taranmış veya karmaşık tabloların kusursuz ayrıştırılması garanti edilmez; tablo satırları ve sayılar kaynakla kontrol edilmelidir.
+
+Bu geliştirme **GitHub Pages web sürümüne** uygulanmıştır; Windows portable dağıtımının motoru değiştirilmemiştir.
+
+
 # Tablova — PDF → Excel Dönüştürücü
 
 **Yayıncı: DEMİRHAN ÖZDEMİR** · **Ana dil: Türkçe** · **Sürüm: 1.1.0** · **Platform: Windows x64 · Portable**

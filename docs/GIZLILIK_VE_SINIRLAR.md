@@ -23,7 +23,7 @@
 
 - **OCR:** Türkçe görsel/PDF sayfası tanıma ve alan seçimi; sonuç OCR kalite sınırlarına tabidir.
 - **PDF → Word:** Düzenlenebilir dijital metin ya da görsel sayfa modu. Aynı anda bütün grafiklerin birebir korunması ve kusursuz düzenlenebilirlik garanti değildir.
-- **PDF → Excel:** Temel hizalı dijital tablolar; en yaygın sütun dizilimindeki satırlar çıkartılır, düzensiz satırlar raporlanarak atlanabilir. Tarama ve karmaşık tablo için uygun değildir.
+- **PDF → Excel:** Sabit 120 sayfa ve 15.000 satır kontrolleri kaldırılmıştır. Sayfalar sırasıyla incelenir, Excel çalışma sayfasındaki 1.048.576 satırlık teknik sınır dolarsa ek sayfa açılır. Kullanılabilir tarayıcı belleği ve cihaz performansı pratik sınırdır. Temel hizalı dijital tablolarda, en yaygın sütun dizilimindeki satırlar çıkartılır; düzensiz satırlar raporlanarak atlanabilir. Tarama ve karmaşık tablo için uygun değildir.
 - **Filigran İnceleme:** Yalnızca metin bazlı filigran aday raporu; **filigran kaldırma yoktur**. İnceleme PDF'yi değiştirmez.
 
 ## Yerel kalite kontrolleri
