@@ -1,3 +1,8 @@
+<!-- TARAYICIDA_CEVRIMDISI_SURUM -->
+**[TARAYICIDA CALISAN SURUMU AC](https://rusebound.github.io/PDF-to-Excel/)** - Kurulumsuz, belgeyi sunucuya yuklemeden calisir. Bu web surumu Windows EXE motorunun tum ozelliklerine esdeger degildir. Ayrintilar: [Gizlilik ve Sinirlar](docs/GIZLILIK_VE_SINIRLAR.md).
+Web kaynak kodu: [web-src](web-src/). GitHub Pages yayinindan once ve sonra kurum BT politikaniza uyun.
+<!-- /TARAYICIDA_CEVRIMDISI_SURUM -->
+
 # Tablova — PDF → Excel Dönüştürücü
 
 **Yayıncı: DEMİRHAN ÖZDEMİR** · **Ana dil: Türkçe** · **Sürüm: 1.1.0** · **Platform: Windows x64 · Portable**

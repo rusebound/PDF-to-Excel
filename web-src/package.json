@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "docx": "9.10.0",
+    "esbuild": "0.28.2",
+    "fflate": "0.8.3",
+    "pdfjs-dist": "5.4.624"
+  },
+  "devDependencies": {
+    "playwright": "^1.58.2"
+  }
+}
