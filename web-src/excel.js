@@ -255,7 +255,7 @@ app.run = async file => {
       const dominant = [...counts.entries()].sort((a, b) => b[1] - a[1] || b[0] - a[0])[0]?.[0];
       tableRows = rows.filter(row => row.length === dominant);
     }
-    if (tableRows.length < 2) {
+    if (tableRows.length < (extractionMode === "grid" ? 1 : 2)) {
       throw new Error("Tutarlı sütun düzenine sahip yeterli tablo satırı bulunamadı.");
     }
 

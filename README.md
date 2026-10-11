@@ -4,7 +4,9 @@
 **Ã–nemli:** Web sÃ¼rÃ¼mÃ¼nÃ¼n Ã¶zellikleri Windows masaÃ¼stÃ¼ motoruyla birebir aynÄ± deÄŸildir. [Gizlilik ve teknik sÄ±nÄ±rlar](docs/GIZLILIK_VE_SINIRLAR.md) Â· [Denetlenebilir web kaynak kodu](web-src/).
 <!-- /TARAYICIDA_CEVRIMDISI_SURUM -->
 
-### Web sürümü — sayfa limiti kaldırıldı
+### Web sürümü — tablo hücresi algılama ve sayfa limiti
+
+Çizgili PDF tabloları artık vektörel hücre sınırlarına göre çözülmeye çalışılır. Önceden görülen 12 sütunun 2 sütuna düşmesi ve filigran karakterlerinin araya karışması sorunları için özel iyileştirme yapıldı. Bu yöntem sentetik belgelerle test edilmiştir; gerçek belge türlerinde tam doğruluk garantisi yoktur. [Tablo motoru test raporu](docs/CIZGILI_TABLO_QA.md).
 
 - **PDF sayfa sayısı için 120 sayfa sınırı artık bulunmuyor.** Bütün sayfalar sırayla incelenir.
 - Uzun belgelerde işlenen sayfa sayısı gösterilir; **İşlemi durdur** düğmesi bulunur.
