@@ -17,7 +17,7 @@ Web sürümünde masaüstü portable uygulamanın **aynı Python tablo motoru** 
 
 Kısa resmî belgeler, alan–değer formları ve birden fazla bağımsız tablosu bulunan PDF'ler otomatik **Belge Modu** ile işlenir. Seçilebilir metinler belge sırasıyla `Belge_1` gibi çalışma sayfalarına, çizgili tablo bölümleri ayrı `Tablo_1` sayfalarına aktarılır. Bu mod içeriği düzenlenebilir yapar; **PDF görsellerini, karekodları ve birebir sayfa tasarımını yeniden oluşturmaz**.
 
-Gerçek kullanıcı belgeleri GitHub'a gönderilmez. Bu mod kullanıcı tarafından sağlanan altı farklı belge şablonunun yapısına göre geliştirilmiş ve kişisel bilgi içermeyen altı test PDF'siyle tarayıcıda doğrulanmıştır. Gerçek belgeler tarayıcıda henüz ayrı uçtan uca çalıştırılmamıştır.
+Gerçek kullanıcı belgeleri GitHub'a gönderilmez. Bu mod kullanıcı tarafından sağlanan altı farklı belge şablonunun yapısına göre geliştirilmiş ve kişisel bilgi içermeyen altı test PDF'siyle tarayıcıda doğrulanmıştır. Gerçek altı belge, yayımlanan GitHub Pages sürümünde Chrome ile yerel dosya seçimi üzerinden test edilmiştir: 6 XLSX, toplam 14 çalışma sayfası, 0 tarayıcı hatası ve 0 site dışı ağ isteği. Belgeler GitHub'a yüklenmemiştir.
 
 ### Teknik sınır
 

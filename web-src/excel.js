@@ -467,7 +467,7 @@ app.run=async files=>{
     }
     const resultText=(cancelled?"İşlem durduruldu. ":"")+count+" / "+selections.length+" PDF dönüştürüldü."+
       (errors.length?" "+errors.length+" hata oluştu.":"")+
-      (warningCount?" "+warningCount+" OCR/kalite uyarısı sonuç raporunda.":"")+
+      (warningCount?" "+warningCount+" belge/kalite uyarısı sonuç raporunda.":"")+
       (count>0?(selectedDirectory?" Çıktılar seçilen klasöre kaydedildi.":" Dosyalar tarayıcıdan indirildi."):" Excel çıktısı oluşturulmadı.");
     setMessage(resultText,errors.length||cancelled?"error":warningCount?"warning":"ok");
     element("report").textContent=[...summaries,...errors].join("\n");

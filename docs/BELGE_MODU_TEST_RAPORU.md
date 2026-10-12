@@ -36,7 +36,7 @@
 
 Gönderilen altı belge, ayrı ve hassas test dosyaları olarak **ChatGPT çalışma alanında** yapısal olarak incelendi. Belgelerin toplam **202 seçilebilir metin satırı** ve **7 algılanabilir çizgili tablo bölümü** tespit edildi. Bu metin satırlarının tamamı ayrı üretilen XLSX dosyalarında bulunabildi.
 
-**Önemli:** Gerçek, kişisel bilgi taşıyan altı belge **GitHub deposuna veya test sunucusuna yüklenmedi**. Aynı gerçek dosyaların GitHub Pages'te uçtan uca dönüşümünün ayrıca kullanıcı tarafından denenmesi gerekir. Özgün karekod veya görsellerin Excel çıktısında yer aldığı iddia edilmez. Tabloların anlamsal birleşimleri manuel olarak kontrol edilmelidir.
+**Gerçek altı belge için canlı GitHub Pages testi:** Chrome üzerinden kullanıcı bilgisayarındaki yerel PDF'ler seçilerek 6/6 XLSX, toplam 14 Excel çalışma sayfası üretildi. Tarayıcı hatası 0, site dışı ağ isteği 0 olarak gözlendi. Kişisel bilgi taşıyan belgeler **GitHub deposuna veya bir dönüştürme API sunucusuna yüklenmedi**. Çıktıların birebir görsel eşdeğerliği hedeflenmez. Özgün karekod veya görsellerin Excel çıktısında yer aldığı iddia edilmez. Tabloların anlamsal birleşimleri manuel olarak kontrol edilmelidir.
 
 ## PASS/FAIL ölçütü
 
