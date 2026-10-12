@@ -20,6 +20,10 @@
 - Çalışma ortamı ilk yüklemede yaklaşık onlarca MB statik dosya indirir; belge dışarı çıkmaz.
 - Dönüştürme RAM/CPU tüketir; sayfa sayısı için yapay sınır yoktur fakat sınırsız bellek yoktur. Excel çalışma sayfası başına en fazla 1.048.576 satır ve 16.384 sütun destekler.
 
+## Yeni Belge Modu
+
+Kısa, metin ağırlıklı resmî belgeler ile birleşik/muhtelif tabloları bulunan formlar belge modu ile XLSX çıktısına aktarılır. Belgede seçilebilir metin varsa `Belge_N` sayfalarında tüm okunabilir metin satırları ve konumları; çizgili tablolar varsa `Tablo_N` sayfalarında düzenlenebilir hücreler oluşturulur. Bu mod karekod, fotoğraf, logo gibi görsel nesneleri ve PDF'nin piksel düzeyinde sayfa görünümünü taşımaz. Taranmış ve seçilebilir metni olmayan belge için eşdeğer OCR desteği sağlanmamıştır.
+
 ## Birebir eşdeğerlik kapsamı
 
 12 Ekim 2026'da gerçek **1.443 sayfalık dijital PDF** üzerinde tarayıcı içindeki Python motoru ile masaüstü portable motoru karşılaştırılmıştır:

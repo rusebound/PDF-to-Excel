@@ -13,6 +13,12 @@ Web sürümünde masaüstü portable uygulamanın **aynı Python tablo motoru** 
 - Hedef klasörü yalnızca kullanıcının açık izniyle seçme; aksi halde tarayıcı indirmesi.
 - Excel tarih, sayı, metin, uzun açıklama ve uyarı biçimleri için portable motorun çıktı kuralları.
 
+### Belge modu ve teknik sınır
+
+Kısa resmî belgeler, alan–değer formları ve birden fazla bağımsız tablosu bulunan PDF'ler otomatik **Belge Modu** ile işlenir. Seçilebilir metinler belge sırasıyla `Belge_1` gibi çalışma sayfalarına, çizgili tablo bölümleri ayrı `Tablo_1` sayfalarına aktarılır. Bu mod içeriği düzenlenebilir yapar; **PDF görsellerini, karekodları ve birebir sayfa tasarımını yeniden oluşturmaz**.
+
+Gerçek kullanıcı belgeleri GitHub'a gönderilmez. Bu mod kullanıcı tarafından sağlanan altı farklı belge şablonunun yapısına göre geliştirilmiş ve kişisel bilgi içermeyen altı test PDF'siyle tarayıcıda doğrulanmıştır. Gerçek belgeler tarayıcıda henüz ayrı uçtan uca çalıştırılmamıştır.
+
 ### Teknik sınır
 
 **Taranmış PDF/OCR için web ve masaüstü eşdeğerliği henüz sağlanmamıştır.** Hatalı veya eksik Excel üretmek yerine web sürümü bu belgelerde uyarı verir; Windows portable sürümü kullanılmalıdır. Diğer PDF türleri için de sonuçları kaynakla doğrulamak gerekir.

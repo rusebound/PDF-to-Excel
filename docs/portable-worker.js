@@ -27,7 +27,7 @@ async function initialize(){
       send("progress",{phase:"boot",current:i+1,total:files.length,message:"Portable motor hazırlanıyor ("+(i+1)+"/"+files.length+")"});
    }
    python.FS.mkdirTree("/app/tablova");
-   for(const filename of ["__init__.py","table_geometry.py","engine.py"]){
+   for(const filename of ["__init__.py","table_geometry.py","document_layout.py","engine.py"]){
      const response=await fetch(new URL("./python/"+filename,base),{cache:"force-cache"});
      if(!response.ok)throw new Error("Yerel Python kaynakları okunamadı: "+filename);
      const bytes=new Uint8Array(await response.arrayBuffer());

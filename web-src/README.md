@@ -14,6 +14,8 @@ node rebuild.mjs
 npm audit
 ```
 
+**Belge Modu:** `docs/python/document_layout.py` modülü resmî belge, alan–değer listeleri ve birden fazla tablosu olan kısa PDF'ler için çalışır. Tam metin `Belge_N`, çizgili tablolar `Tablo_N` çalışma sayfalarına aktarılır. Bu sonuç resmî belgenin fotoğraf, karekod ve sayfa tasarımını birebir kopyalamaz.
+
 **Not:** Yalnızca JavaScript derlemek, Python/WebAssembly veya wheel sürümlerini güncellemez. Yeni bağımlılık sürümlerinde lisans ve regresyon incelemesi gerekir.
 
 Dijital PDF örnek testinde **106.932/106.932 hücre eşitliği** doğrulandı. Taranmış PDF'de portable OCR eşdeğerliği henüz sağlanmadığı için tahmini Excel üretilmez.

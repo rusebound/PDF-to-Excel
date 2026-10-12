@@ -20,6 +20,7 @@ from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 from .table_geometry import find_ruled_tables, is_header, clean_page, is_watermark_char
+from .document_layout import is_document_layout, collect_document_page, write_document_workbook
 
 MAX_PAGES = 3000
 MAX_BYTES = 512 * 1024 * 1024
@@ -456,6 +457,7 @@ def convert_pdf(
     if progress:
         progress(0, 1, "PDF inceleniyor")
     raw_tables: list[TableData] = []
+    document_pages = []
     warnings: list[str] = []
     ocr_pages = 0
     watermark_pages = 0
@@ -465,11 +467,17 @@ def convert_pdf(
             pages = len(pdf.pages)
             if pages == 0 or pages > MAX_PAGES:
                 raise ConversionError("PDF sayfa sayısı desteklenen aralığın dışında.")
+            document_mode = is_document_layout(pdf)
             for pi, page in enumerate(pdf.pages):
                 _check_cancel(stop)
                 if any(is_watermark_char(c) for c in page.chars):
                     watermark_pages += 1
                 try:
+                    if document_mode:
+                        document_pages.append(collect_document_page(page, pi + 1))
+                        if progress:
+                            progress(pi + 1, pages + 1, f"Belge sayfası {pi + 1}/{pages} okundu")
+                        continue
                     try:
                         results = _native_tables(page, pi + 1) if len(page.chars) > 4 else []
                     except Exception as exc:
@@ -509,8 +517,8 @@ def convert_pdf(
             f"Kaynak PDF'de {masked_amount_cells} tutar hücresi okunabilir sayı yerine "
             "###### içeriyor; bu hücreler Excel'de sarı işaretlendi."
         )
-    tables = _join_continuations(raw_tables)
-    if not tables:
+    tables = _join_continuations(raw_tables) if not document_pages else []
+    if not tables and not document_pages:
         raise ConversionError("PDF içinde güvenilir şekilde çıkarılabilen tablo bulunamadı. " +
                               (" ".join(warnings[:2]) if warnings else ""))
     _check_cancel(stop)
@@ -521,14 +529,17 @@ def convert_pdf(
             staging = Path(temp.name)
         if progress:
             progress(pages, pages + 1, "Excel oluşturuluyor ve doğrulanıyor")
-        row_count = _write_workbook(tables, staging, stop)
+        row_count = (write_document_workbook(document_pages, staging, stop)
+                     if document_pages else _write_workbook(tables, staging, stop))
         _check_cancel(stop)
-        _verify_workbook(staging, len(tables))
+        _verify_workbook(staging, 1 if document_pages else len(tables))
         _check_cancel(stop)
         final = _publish_no_clobber(staging, wanted)
         if progress:
             progress(pages + 1, pages + 1, "Tamamlandı")
-        return ConversionResult(final, pages, len(tables), row_count, ocr_pages, warnings, watermark_pages)
+        if document_pages:
+            warnings.append("Belge düzeni: metinler sayfa sırasıyla, çizgili tablolar ayrı Excel sayfalarında aktarıldı. QR ve görseller Excel'e aktarılmaz.")
+        return ConversionResult(final, pages, len(tables) + sum(len(p.tables) for p in document_pages), row_count, ocr_pages, warnings, watermark_pages)
     finally:
         if staging is not None:
             staging.unlink(missing_ok=True)
