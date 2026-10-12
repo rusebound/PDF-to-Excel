@@ -1,21 +1,25 @@
-<!-- TARAYICIDA_CEVRIMDISI_SURUM -->
-**[KURULUMSUZ WEB UYGULAMASINI AÃ‡](https://rusebound.github.io/PDF-to-Excel/)** â€” DosyanÄ±zÄ± sunucuya yÃ¼klemeden tarayÄ±cÄ±nÄ±zda kullanÄ±n. YÃ¶netici yetkisi veya EXE kurulumu gerekmez; kurumunuzun tarayÄ±cÄ± ve aÄŸ politikalarÄ± yine de geÃ§erlidir.
+# Tablova Web — Portable Python Motoruyla PDF → Excel
 
-**Ã–nemli:** Web sÃ¼rÃ¼mÃ¼nÃ¼n Ã¶zellikleri Windows masaÃ¼stÃ¼ motoruyla birebir aynÄ± deÄŸildir. [Gizlilik ve teknik sÄ±nÄ±rlar](docs/GIZLILIK_VE_SINIRLAR.md) Â· [Denetlenebilir web kaynak kodu](web-src/).
-<!-- /TARAYICIDA_CEVRIMDISI_SURUM -->
+**Yayıncı: Demirhan Özdemir** · **Ana dil: Türkçe** · **Web: kurulum gerektirmez**
 
-### Web sürümü — tablo hücresi algılama ve sayfa limiti
+**[Web uygulamasını aç](https://rusebound.github.io/PDF-to-Excel/)** · [Gizlilik ve kullanım](docs/GIZLILIK_VE_SINIRLAR.md) · [Birebir hücre kabul raporu](docs/PORTABLE_ESDEGERLIK_KABUL_RAPORU.md)
 
-Çizgili PDF tabloları artık vektörel hücre sınırlarına göre çözülmeye çalışılır. Önceden görülen 12 sütunun 2 sütuna düşmesi ve filigran karakterlerinin araya karışması sorunları için özel iyileştirme yapıldı. Bu yöntem sentetik belgelerle test edilmiştir; gerçek belge türlerinde tam doğruluk garantisi yoktur. [Tablo motoru test raporu](docs/CIZGILI_TABLO_QA.md).
+Web sürümünde masaüstü portable uygulamanın **aynı Python tablo motoru** `Pyodide/WebAssembly` üzerinde tarayıcı içinde çalıştırılır. PDF belgeleri ve sonuçları sunucuya gönderilmez. Kurumunuzun JavaScript, WebAssembly ve dosya indirme politikaları geçerlidir.
 
-- **PDF sayfa sayısı için 120 sayfa sınırı artık bulunmuyor.** Bütün sayfalar sırayla incelenir.
-- Uzun belgelerde işlenen sayfa sayısı gösterilir; **İşlemi durdur** düğmesi bulunur.
-- Önceki 15.000 satırlık yapay sınır kaldırılmıştır. Excel'in çalışma sayfası başına 1.048.576 satır sınırında yeni sayfa oluşturulur.
-- **Gerçek sınırlar:** Tarayıcının belleği, cihaz performansı, PDF'nin işlenebilirliği ve Excel'in teknik özellikleri. Çok büyük PDF dosyaları başarısız olabilir.
-- Taranmış veya karmaşık tabloların kusursuz ayrıştırılması garanti edilmez; tablo satırları ve sayılar kaynakla kontrol edilmelidir.
+### Doğrulanan özellikler
 
-Bu geliştirme **GitHub Pages web sürümüne** uygulanmıştır; Windows portable dağıtımının motoru değiştirilmemiştir.
+- Gerçek dijital PDF testinde **1.443 sayfa, 8.910 kayıt, 12 sütun ve 106.932/106.932 birebir eşleşen Excel hücresi**, **0 veri türü farkı**.
+- Çoklu PDF seçimi, listeden kaldırma, toplu ZIP, işlemi durdurma, ilerleme ve Türkçe hata açıklamaları.
+- Hedef klasörü yalnızca kullanıcının açık izniyle seçme; aksi halde tarayıcı indirmesi.
+- Excel tarih, sayı, metin, uzun açıklama ve uyarı biçimleri için portable motorun çıktı kuralları.
 
+### Teknik sınır
+
+**Taranmış PDF/OCR için web ve masaüstü eşdeğerliği henüz sağlanmamıştır.** Hatalı veya eksik Excel üretmek yerine web sürümü bu belgelerde uyarı verir; Windows portable sürümü kullanılmalıdır. Diğer PDF türleri için de sonuçları kaynakla doğrulamak gerekir.
+
+[Kaynak kod](web-src/) · [Üçüncü taraf bileşenler](docs/UCUNCU_TARAF_BAGIMLILIKLAR.md)
+
+---
 
 # Tablova — PDF → Excel Dönüştürücü
 

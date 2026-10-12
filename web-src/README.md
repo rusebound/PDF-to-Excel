@@ -1,30 +1,21 @@
-# Web uygulamasÄ± â€” Kaynak kodu
+# Tablova Web kaynak kodu — Portable Python/WebAssembly
 
-**YayÄ±ncÄ±:** Demirhan Ã–zdemir Â· **Dil:** TÃ¼rkÃ§e
+Bu klasör GitHub Pages üzerinde `docs/` altında yayımlanan web sürümünün JavaScript kaynak kodunu içerir.
 
-**YayÄ±n adresi:** https://rusebound.github.io/PDF-to-Excel/
+**Asıl dönüştürme motoru:** `web-src/portable-client.js` → `docs/portable-worker.js` → `docs/python/engine.py`. Python tablo motoru portable Tablova kaynak kodundan alınmıştır. Kullanılan `pdfplumber 0.11.10`, `pdfminer.six 20260107`, `openpyxl 3.1.5` sürümleri masaüstüyle aynıdır.
 
-Burada HTML/CSS/JavaScript tabanlÄ±, kullanÄ±cÄ± belgelerini sunucuya yÃ¼klemeyen web sÃ¼rÃ¼mÃ¼nÃ¼n geliÅŸtirici dosyalarÄ± bulunmaktadÄ±r.
-Dosyalar tarayÄ±cÄ±nÄ±n yerel belleÄŸinde iÅŸlenir. BaÅŸlangÄ±Ã§ta uygulama kodu ve gerekli motor dosyalarÄ± GitHub Pages'ten indirilir.
-KullanÄ±cÄ±larÄ±n hiÃ§bir program, EXE veya tarayÄ±cÄ± eklentisi kurmasÄ± gerekmez.
+`docs/pyodide`, `docs/wheels` ve `docs/python` statik dosyaları aynı GitHub Pages alan adından indirilir; kullanıcı PDF dosyası yüklenmez. `web-src/excel.js` içinde bulunan eski JavaScript çıkarım kodu aktif birincil motor değildir.
 
-## Yeniden derleme (yalnÄ±zca geliÅŸtirici iÃ§in)
+Geliştirme bilgisayarında Node.js 22+:
 
-Node.js 22+ yÃ¼klÃ¼ geliÅŸtirme bilgisayarÄ±nda:
-
-`powershell
+```powershell
 npm ci
 node rebuild.mjs
 npm audit
-`
+```
 
-Bu iÅŸlem docs/app.js, docs/style.css ve docs/pdf.worker.min.mjs dosyalarÄ±nÄ± gÃ¼nceller. docs/index.html mevcut statik sitedir.
-KullanÄ±cÄ±nÄ±n kurum bilgisayarÄ±nda bu komutlarÄ± Ã§alÄ±ÅŸtÄ±rmasÄ± gerekmez.
+**Not:** Yalnızca JavaScript derlemek, Python/WebAssembly veya wheel sürümlerini güncellemez. Yeni bağımlılık sürümlerinde lisans ve regresyon incelemesi gerekir.
 
-## GÃ¼venlik
+Dijital PDF örnek testinde **106.932/106.932 hücre eşitliği** doğrulandı. Taranmış PDF'de portable OCR eşdeğerliği henüz sağlanmadığı için tahmini Excel üretilmez.
 
-- Harici belge yÃ¼kleme API'si, kullanÄ±cÄ± oturumu ve telemetri eklenmemiÅŸtir.
-- GitHub Pages ziyaretÃ§i baÄŸlantÄ± meta verilerini gÃ¶rebilir.
-- Kurumunuzun BT, DLP, WebAssembly, JavaScript ve indirme politikalarÄ±na uyulmalÄ±dÄ±r.
-- TarayÄ±cÄ± testleri bir Ã¶rnek belge setinde PASS almÄ±ÅŸtÄ±r; baÄŸÄ±msÄ±z kurumsal gÃ¼venlik sertifikasyonu deÄŸildir.
-- Belge dÃ¶nÃ¼ÅŸtÃ¼rme doÄŸruluÄŸunun teknik sÄ±nÄ±rlarÄ± iÃ§in [gizlilik aÃ§Ä±klamasÄ±nÄ±](../docs/GIZLILIK_VE_SINIRLAR.md) okuyun.
+[Doğrulama raporu](../docs/PORTABLE_ESDEGERLIK_KABUL_RAPORU.md) · [Gizlilik](../docs/GIZLILIK_VE_SINIRLAR.md)

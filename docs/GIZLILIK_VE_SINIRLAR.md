@@ -1,42 +1,43 @@
-# Gizlilik, veri güvenliği ve kullanım sınırları
+# Gizlilik, kurumsal kullanım ve teknik sınırlar
 
-**Yayıncı:** Demirhan Özdemir · **Dil:** Türkçe
+**Uygulama:** Tablova — PDF’den Excel’e (GitHub Pages web sürümü)
+**Yayıncı:** Demirhan Özdemir
+**Dil:** Türkçe
 
-## İşlenen belgeler nerede kalır?
+## Belge güvenliği
 
-- Kullanıcı dosyası `input[type=file]` / tarayıcı dosya seçicisi üzerinden **yerel belleğe** alınır.
-- PDF metni, görüntü, OCR ve dışa aktarım işlemleri istemcide JavaScript/WebAssembly ile gerçekleştirilir.
-- Uygulama dosya yükleyen POST isteği, harici OCR/dönüştürme API'si, analiz/telemetri, kullanıcı kaydı, reklam ve sunucu saklama mekanizması içermez.
-- Çıktı `Blob` ve cihazın yerel indirme işlemiyle oluşturulur.
-- Tesseract OCR motoru ve dil modeli de dahil olmak üzere JavaScript/WASM çalışma dosyaları GitHub Pages üzerinden indirilir. **Bu indirme, kullanıcının belgesinin GitHub'a yüklendiği anlamına gelmez.**
+- Kullanıcının seçtiği PDF, tarayıcının dosya seçme arayüzü üzerinden yerel olarak okunur. Dönüşüm tarayıcı içindeki bir **Web Worker + Pyodide (Python/WebAssembly)** çalışma ortamında gerçekleştirilir.
+- `pdfplumber 0.11.10`, `pdfminer.six 20260107` ve `openpyxl 3.1.5` portable sürümün kendi Python motoruyla birlikte tarayıcıda çalışır.
+- Uygulama kodunda belge yükleyen sunucu API'si, hesap gereksinimi, telemetri veya belge saklama hizmeti bulunmaz. XLSX çıktı yerel indirme ya da kullanıcının açıkça izin verdiği klasöre yazma ile oluşturulur.
+- Python, WebAssembly, motor ve üçüncü taraf paket dosyaları GitHub Pages'in **aynı kaynağından (same-origin)** indirilen statik dosyalardır. Bu, kullanıcının belgeyi GitHub'a yüklediği anlamına gelmez.
+- Test edilen Chrome oturumlarında sitenin kendi kaynağı dışına ağ isteği ve belge yükleme HTTP isteği görülmedi. Bu, tüm cihazlarda sınırsız güvenlik garantisi değildir.
 
-## Gizlilik güvencesinin gerçek sınırları
+## Bilinmesi gerekenler
 
-- GitHub Pages sunucusu, HTTP isteklerinde IP adresi, tarayıcı bilgisi ve istenen statik dosyaların yolunu görebilir. Sıfır ağ trafiği veya sıfır bağlantı meta verisi iddiası yoktur.
-- Kurumsal proxy, güvenlik duvarı, yönetilen tarayıcı/eklenti, DLP veya EDR sistemleri trafiği ve yerel dosya etkinliğini ayrıca kaydedebilir.
-- Tarayıcı belleği ve geçici verilerin işletim sistemi tarafından diske yazılmaması garanti edilemez.
-- Üçüncü taraf PDF ve OCR bileşenlerinin güvenlik açıklarına karşı tarayıcı güncel tutulmalıdır.
-- Yerel tarayıcı testinde **belge yükleyen POST** ve site dışına ağ isteği gözlenmedi; bu test başka cihazlarda kapsamlı bağımsız güvenlik denetimi yerine geçmez.
-- Web sitelerini kullanmak yönetici yetkisi gerektirmez, ancak kurumunuzun GitHub Pages, JS, WASM, dosya seçimi veya indirmeler üzerindeki engellerini aşamaz. İzin gerekiyorsa BT biriminden onay alın.
+- GitHub Pages ve kurumsal ağ/proxy, siteye yapılan statik GET istekleri ile bağlantı meta verilerini kaydedebilir.
+- Tarayıcı, işletim sistemi ve kurumsal DLP/EDR yazılımları yerel dosya etkinliğini kaydedebilir. Bellekten diske geçici yazma yapılmayacağı garanti edilemez.
+- JavaScript, WebAssembly ve dosya indirmeye kurum politikası izin vermiyorsa web sürümü çalışmayabilir. Kısıtlamaları aşmaya yönelik bir mekanizma yoktur.
+- Çalışma ortamı ilk yüklemede yaklaşık onlarca MB statik dosya indirir; belge dışarı çıkmaz.
+- Dönüştürme RAM/CPU tüketir; sayfa sayısı için yapay sınır yoktur fakat sınırsız bellek yoktur. Excel çalışma sayfası başına en fazla 1.048.576 satır ve 16.384 sütun destekler.
 
-## İşlev sınırları
+## Birebir eşdeğerlik kapsamı
 
-- **OCR:** Türkçe görsel/PDF sayfası tanıma ve alan seçimi; sonuç OCR kalite sınırlarına tabidir.
-- **PDF → Word:** Düzenlenebilir dijital metin ya da görsel sayfa modu. Aynı anda bütün grafiklerin birebir korunması ve kusursuz düzenlenebilirlik garanti değildir.
-- **PDF → Excel:** Sabit 120 sayfa ve 15.000 satır kontrolleri kaldırılmıştır. Sayfalar sırasıyla incelenir, Excel çalışma sayfasındaki 1.048.576 satırlık teknik sınır dolarsa ek sayfa açılır. Kullanılabilir tarayıcı belleği ve cihaz performansı pratik sınırdır. Temel hizalı dijital tablolarda, en yaygın sütun dizilimindeki satırlar çıkartılır; düzensiz satırlar raporlanarak atlanabilir. Tarama ve karmaşık tablo için uygun değildir.
-- **Filigran İnceleme:** Yalnızca metin bazlı filigran aday raporu; **filigran kaldırma yoktur**. İnceleme PDF'yi değiştirmez.
+12 Ekim 2026'da gerçek **1.443 sayfalık dijital PDF** üzerinde tarayıcı içindeki Python motoru ile masaüstü portable motoru karşılaştırılmıştır:
 
-## Yerel kalite kontrolleri
+- 8.910 veri kaydı, 12 sütun ve 116 okunamayan tutar uyarısı
+- 106.932 / 106.932 Excel hücresi **aynı değer**
+- 0 Excel hücre türü uyuşmazlığı
+- 0 dış ağ isteği/harici belge aktarımı (test oturumu)
+- Chrome üzerinden yaklaşık 203,9 saniyede işlem
 
-- Gerçek Chrome ile yerel HTTP sunucusunda dört web sayfası açılarak test edildi.
-- İki sayfalı örnek PDF üzerinde: düzenlenebilir DOCX, görsel DOCX, XLSX, filigran adayı; örnek Türkçe görüntüde OCR sonucu üretildi.
-- XLSX ayrıca openpyxl ile yeniden açıldı: tek çalışma sayfasında 4 satır, 3 sütun.
-- Test gözleminde site dışı istek ve GET/HEAD harici HTTP yöntemi sayısı: **0**.
-- Bağımlılıkları kurarken `npm audit`: **0 bilinen güvenlik uyarısı** (test anında).
-- Bu bir örnek setidir; gerçek kurumsal uyumluluk, erişilebilirlik ve tüm dosya türleri için üretim kabulü yapılmadı.
+Bu, **test edilen dijital belgedeki** değer ve hücre türü eşdeğerliğinin kanıtıdır; her PDF ve her bilgisayar için koşulsuz garanti değildir. XLSX ZIP meta verileri ve dosya baytları farklı olabilir.
 
-## Üçüncü taraf
+### Taranmış PDF / OCR sınırı
 
-PDF.js / pdfjs-dist 5.4.624 (Apache-2.0), docx 9.10.0 (MIT), fflate 0.8.3 (MIT). OCR projesinde ayrıca Tesseract.js, Tesseract Core ve Türkçe OCR modelini içeren yerel paket vardır; paketli üçüncü taraf lisansları ayrıca incelenmelidir. Bunların tamamı istemci tarafına gönderilen statik dosyalardır.
+Portable masaüstü OCR, yerel Tesseract/PDFium bileşenlerine bağımlıdır ve tarayıcıda eşdeğerliği henüz doğrulanmamıştır. **Taranmış ya da güvenilir tablo çıkarılamayan PDF için web sürümü tahmini Excel üretmez; açık uyarı gösterir.** Bunun için Windows portable sürümü kullanılmalıdır. OCR motorunun farklı bir sonuç üretmesine sessizce izin verilmez.
 
-**Kritik belge işleme:** Kurumsal bilgi güvenliği politikasının onayını almadan gizli kişisel/kurumsal belge işlemeyin.
+## Üçüncü taraf ve kaynak kodu
+
+Dağıtılan kütüphaneler ve lisans bilgileri için [üçüncü taraf bildirimi](UCUNCU_TARAF_BAGIMLILIKLAR.md) belgesine bakın. Web uygulamasının kaynakları [web-src](../web-src/) içindedir; Python motorunun kaynakları webde statik olarak erişilebilir olduğundan kapalı kaynak/sır niteliğinde kabul edilmemelidir.
+
+**Kurumsal veya kişisel hassas belgeler:** Kurum bilgi güvenliği politikasının açık onayı olmadan işlem yapılmamalıdır.

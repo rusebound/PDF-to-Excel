@@ -1,4 +1,5 @@
 import {OPS} from "pdfjs-dist";
+import {positionedCharacters} from "./positioned-chars.js";
 
 function multiply(a,b){
   return [
@@ -29,7 +30,7 @@ function intervalIndex(edges,v) {
   }
   return -1;
 }
-async function detectGrid(page){
+export async function detectGrid(page){
   const ops=await page.getOperatorList();
   let current=[1,0,0,1,0,0],stack=[];
   const vertical=[],horizontal=[];
@@ -54,7 +55,7 @@ async function detectGrid(page){
   const maxH=Math.max(0,...horizontal.map(v=>v.size));
   if(maxV<20 || maxH<200)return null;
   const xs=cluster(vertical.filter(v=>v.size>=maxV*.75).map(v=>v.pos));
-  const ys=cluster(horizontal.filter(v=>v.size>=maxH*.75).map(v=>v.pos));
+  const ys=cluster(horizontal.filter(v=>v.size>=maxH*.60).map(v=>v.pos));
   if(xs.length<3||xs.length>25||ys.length<2||ys.length>200)return null;
   return {xs,ys};
 }
@@ -80,15 +81,15 @@ function wordsFromItem(item,measure){
     const upto=raw.slice(0,p.end);
     const a=canvas.measureText(prefix).width/total;
     const b=canvas.measureText(upto).width/total;
-    result.push({text:p.text,x:x+(a+b)*width*.5,y});
+    result.push({text:p.text,x:x+(a+b)*width*.5,x0:x+a*width,x1:x+b*width,y:y+size*.32,size});
   }
   return result;
 }
 
-export async function extractVectorGridPage(page){
-  const grid=await detectGrid(page);
+export async function extractVectorGridPage(page, gridOverride=null){
+  const grid=gridOverride || await detectGrid(page);
   if(!grid)return null;
-  const {xs,ys}=grid;
+  let {xs,ys}=grid;
   const nrows=ys.length-1,ncols=xs.length-1;
   const tokens=Array.from({length:nrows},()=>Array.from({length:ncols},()=>[]));
   const text=await page.getTextContent({disableCombineTextItems:false});
@@ -107,22 +108,48 @@ export async function extractVectorGridPage(page){
   }
   let rows=tokens.map(cells=>cells.map((contents,col)=>{
     const lines=[];
-    for(const word of contents.sort((a,b)=>b.y-a.y||a.x-b.x)){
+    for(const word of contents.sort((a,b)=>b.y-a.y||a.x0-b.x0)){
       const last=lines[lines.length-1];
-      if(last&&Math.abs(last.y-word.y)<2.5)last.words.push(word);
+      if(last&&Math.abs(last.y-word.y)<=2.1)last.words.push(word);
       else lines.push({y:word.y,words:[word]});
     }
-    const items=lines.map(line=>line.words.sort((a,b)=>a.x-b.x).map(word=>word.text).join(" "));
-    return (col===0?items.join("").replace(/\s+/g,""):items.join(" ")).trim();
+    let parts=lines.map(line=>{
+      const words=line.words.sort((a,b)=>a.x0-b.x0);
+      let output="",prev=null;
+      for(const word of words){
+        if(prev){
+          const gap=word.x0-prev.x1;
+          const tolerance=Math.max(1.25,Math.min(prev.size,word.size)*.21);
+          if(gap>=tolerance&&!output.endsWith(" "))output+=" ";
+        }
+        output+=word.text;
+        prev=word;
+      }
+      return output.trim().replace(/[ \t]+/g," ");
+    }).filter(Boolean);
+    if(col===0&&parts.length<=3&&parts.every(x=>/^[A-Za-z0-9]+$/.test(x)))return parts.join("");
+    if(col===1&&parts.length>1&&parts.at(-1).length===1&&/^\p{L}$/u.test(parts.at(-1))){
+      parts[parts.length-2]+=parts.pop();
+    }
+    const joined=[];
+    for(const chunk of parts){
+      if(joined.length&&joined[joined.length-1].endsWith("-")&&/^\p{L}/u.test(chunk)){
+        joined[joined.length-1]+=chunk;
+      } else joined.push(chunk);
+    }
+    return joined.join("\n");
   })).filter(row=>row.some(x=>x));
   // Some source PDFs contain an extra blank bordered column on the right.
   if(rows.length && rows[0].length===13 && rows.every(row=>!row[12])){
     rows=rows.map(row=>row.slice(0,12));
+    xs=xs.slice(0,12+1); // remove the empty last cell and its rightmost boundary
   }
+  let headerDetected=false;
   if(rows.length&&/^takip\s*no$/i.test(rows[0][0].replace(/([a-z])([A-Z])/g,"$1 $2").trim())){
-    rows.shift();
+    headerDetected=true;rows.shift();
   }else if(rows.length&&rows[0][0].toLocaleLowerCase("tr").includes("takip")){
-    rows.shift();
+    headerDetected=true;rows.shift();
   }
-  return {rows,columns:rows[0]?.length||ncols,ignoredRotated:rotated};
+  return {rows,columns:rows[0]?.length||(xs.length-1),axes:xs,ignoredRotated:rotated,headerDetected};
 }
+
