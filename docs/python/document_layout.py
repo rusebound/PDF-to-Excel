@@ -12,6 +12,8 @@ from typing import Sequence
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
+from .semantic_fields import Field, extract_fields
+from .semantic_tables import append_structured_sheet
 
 
 @dataclass
@@ -19,6 +21,7 @@ class DocumentPage:
     number: int
     lines: list[tuple[float, float, str]]
     tables: list[list[list[str]]]
+    fields: list[Field]
 
 
 def _ruled_tables(page):
@@ -66,7 +69,8 @@ def collect_document_page(page, number: int) -> DocumentPage:
             lines.append((round(float(line["top"]), 2),
                           round(float(line["x0"]), 2), part))
     tables = []
-    for table in _ruled_tables(page):
+    identified_tables = _ruled_tables(page)
+    for table in identified_tables:
         rows = [
             [str(value).strip() if value is not None else ""
              for value in row]
@@ -74,7 +78,9 @@ def collect_document_page(page, number: int) -> DocumentPage:
         ]
         if len(rows) >= 2 and any(any(v for v in row) for row in rows):
             tables.append(rows)
-    return DocumentPage(number, lines, tables)
+    return DocumentPage(number, lines, tables,
+                        extract_fields(page, lines,
+                                       excluded_regions=[t.bbox for t in identified_tables]))
 
 
 def _title(sheet, columns: Sequence[str]):
@@ -116,6 +122,24 @@ def write_document_workbook(pages: list[DocumentPage], target, stop=None) -> int
             sh.row_dimensions[i].height = min(105, max(18, math.ceil(len(text)/115)*16+4))
             total += 1
         sh.auto_filter.ref = sh.dimensions
+        # Field extraction supplements, rather than replaces, the lossless
+        # page text. Every field also carries its position and confidence.
+        if p.fields:
+            fields = wb.create_sheet(f"Alanlar_{p.number}")
+            _title(fields, ("Alan / başlık", "Değer", "Güven", "PDF dikey konum",
+                            "PDF yatay konum", "Çıkarım yöntemi"))
+            for col, width in (("A", 42), ("B", 66), ("C", 14),
+                               ("D", 19), ("E", 19), ("F", 23)):
+                fields.column_dimensions[col].width = width
+            for i, item in enumerate(p.fields, 2):
+                _text(fields.cell(i, 1), item.label)
+                _text(fields.cell(i, 2), item.value)
+                _text(fields.cell(i, 3), item.confidence)
+                fields.cell(i, 4, item.top)
+                fields.cell(i, 5, item.left)
+                _text(fields.cell(i, 6), item.method)
+                fields.row_dimensions[i].height = 32
+            fields.auto_filter.ref = fields.dimensions
         # Actual ruled tables are provided on their own editable worksheets.
         for rows in p.tables:
             if len(wb.worksheets) >= 100:
@@ -130,6 +154,7 @@ def write_document_workbook(pages: list[DocumentPage], target, stop=None) -> int
                     _text(t.cell(ri,ci),value)
             t.freeze_panes = "A2"
             t.auto_filter.ref = t.dimensions
+            append_structured_sheet(wb, rows, len([s for s in wb if s.title.startswith("Veriler_")]) + 1)
     if total == 0:
         raise ValueError("Excel'e aktarılacak metin bulunamadı.")
     wb.save(target)

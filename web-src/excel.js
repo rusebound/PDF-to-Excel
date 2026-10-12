@@ -22,7 +22,7 @@ const app = mount({
   multiple: true,
   features: [
     "Tek veya çoklu PDF seçme, listeden kaldırma ve toplu Excel’e dönüştürme.",
-    "Resmî belgeler için otomatik Belge Modu: okunabilir metinler ve ayrı tablo sayfaları.",
+    "Akıllı belge düzenleme: alan–değer çiftleri, düzenlenebilir tablo sayfaları ve kaynak hücreleri izlenebilen Veriler sayfaları.",
     "PDF belgeleri ve metinler hiçbir sunucuya yüklenmez. Tüm işlemler tarayıcı içinde gerçekleşir.",
     "İlerleme, işlem iptali, sonuç ve uyarı raporları.",
     "Excel tarihi, tutar hücre türü, sayfa birleştirme ve okunamayan tutarların sarı işaretlenmesi.",

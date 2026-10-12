@@ -19,6 +19,12 @@ Kısa resmî belgeler, alan–değer formları ve birden fazla bağımsız tablo
 
 Gerçek kullanıcı belgeleri GitHub'a gönderilmez. Bu mod kullanıcı tarafından sağlanan altı farklı belge şablonunun yapısına göre geliştirilmiş ve kişisel bilgi içermeyen altı test PDF'siyle tarayıcıda doğrulanmıştır. Gerçek altı belge, yayımlanan GitHub Pages sürümünde Chrome ile yerel dosya seçimi üzerinden test edilmiştir: 6 XLSX, toplam 14 çalışma sayfası, 0 tarayıcı hatası ve 0 site dışı ağ isteği. Belgeler GitHub'a yüklenmemiştir.
 
+### Yerel yapısal belge yorumlama
+
+Dijital resmî belgelerde `Alanlar_N` çalışma sayfaları açık başlık–değer çiftlerini çıkarır. Çizgili tablolardaki her dolu hücre `Veriler_N` uzun biçimli görünümde orijinal satır/sütun konumuyla korunur; olası başlıklar ve güven düzeyi ayrıca gösterilir. Kaynak sayfalar `Belge_N`, özgün tablo hücreleri `Tablo_N` sayfalarında kalır. [Yapısal tablo test raporu](docs/YAPISAL_TABLO_MOTORU_RAPORU.md).
+
+Bu, ChatGPT modelinin uygulamaya gömülmesi değildir. Anlamı belirsiz başlık veya hücreler tahmin edilmez; taranmış PDF ve karmaşık çizgisiz tabloların tamamı henüz desteklenmez.
+
 ### Teknik sınır
 
 **Taranmış PDF/OCR için web ve masaüstü eşdeğerliği henüz sağlanmamıştır.** Hatalı veya eksik Excel üretmek yerine web sürümü bu belgelerde uyarı verir; Windows portable sürümü kullanılmalıdır. Diğer PDF türleri için de sonuçları kaynakla doğrulamak gerekir.
